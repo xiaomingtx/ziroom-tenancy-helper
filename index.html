@@ -329,18 +329,18 @@
                     return a.priceParsed.price/a.area - b.priceParsed.price/b.area
                 },
                 rideDurationSort (a, b){
-                    if(!a.pathRide)return -1
-                    if(!b.pathRide)return 1
+                    if(!a.pathRide)return 1
+                    if(!b.pathRide)return -1
                     return a.pathRide.duration - b.pathRide.duration
                 },
                 walkingDurationSort (a, b){
-                    if(!a.pathWalking) return -1
-                    if(!b.pathWalking) return 1
+                    if(!a.pathWalking) return 1
+                    if(!b.pathWalking) return -1
                     return a.pathWalking.duration - b.pathWalking.duration
                 },
                 transitDurationSort (a, b){
-                    if(!a.pathTransitGroup)return -1
-                    if(!b.pathTransitGroup)return 1
+                    if(!a.pathTransitGroup)return 1
+                    if(!b.pathTransitGroup)return -1
                     return a.pathTransitGroup[0].duration - b.pathTransitGroup[0].duration
                 },
                 lastUpdateTimeSort (a, b){
