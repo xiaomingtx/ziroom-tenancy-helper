@@ -17,23 +17,37 @@ app.use('/api/list', async (req, res) => {
   // 过滤
   let result = list.filter(function (item) {
     const price = item.priceParsed.price
-    if (
-      (!item.hasPath) ||
-      (filter.pathType === '0' && item.pathRide !== undefined)||
-      (filter.pathType === '1' && item.pathTransitGroup !== undefined)||
-      (filter.pathType === '2' && item.pathWalking !== undefined)){
+    if (!item.hasPath){
       return Number(price) > Number(filter.price[0])
           && Number(price) < Number(filter.price[1])
     }
     let duration = -1
     if (filter.pathType === '0'){
+      if (item.pathRide !== undefined){
         duration = item.pathRide.duration
+      }
+      else{
+        return Number(price) > Number(filter.price[0])
+            && Number(price) < Number(filter.price[1])
+      }
     }
     if (filter.pathType === '1') {
+      if (item.pathTransitGroup !== undefined && item.pathTransitGroup.length > 0){
         duration = _.minBy(item.pathTransitGroup, 'duration').duration
+      }
+      else{
+        return Number(price) > Number(filter.price[0])
+            && Number(price) < Number(filter.price[1])
+      }
     }
     else if(filter.pathType === '2') {
-      duration = item.pathWalking.duration
+      if (item.pathWalking !== undefined){
+        duration = item.pathWalking.duration
+      }
+      else{
+        return Number(price) > Number(filter.price[0])
+            && Number(price) < Number(filter.price[1])
+      }
     }
     return Number(price) > Number(filter.price[0])
         && Number(price) < Number(filter.price[1])
@@ -98,4 +112,4 @@ async function startSpider () {
   const search = require('./search')
   await search.loop(true, config.keywordsArray[0])
 }
-startSpider() // 开始爬取, 注释此行则启动服务, 不爬数据
+//startSpider() // 开始爬取, 注释此行则启动服务, 不爬数据
