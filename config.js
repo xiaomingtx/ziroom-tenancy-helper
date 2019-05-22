@@ -27,5 +27,7 @@ module.exports = {
   // 搜索的最大页数
   maxPage: 100,
   // 监听端口
-  port: 8000
+  port: 8000,
+  // 是否爬取，若为false，仅展示已爬取数据，不再爬取
+  crawl: false
 }
