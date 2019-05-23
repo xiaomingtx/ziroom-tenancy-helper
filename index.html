@@ -196,10 +196,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="priceParsed.price" label="价格" width="90" sortable></el-table-column>
-            <el-table-column prop="area" label="面积" width="80" sortable></el-table-column>
+            <el-table-column prop="area" label="面积" width="80" sortable :sort-method="areaSort"></el-table-column>
             <el-table-column label="人民币每平" width="120" sortable :sort-method="valueForMoneySort">
                 <template slot-scope="scope">
-                    {{(scope.row.priceParsed.price/scope.row.area).toFixed(2)}}
+                    {{(scope.row.priceParsed.price/parseFloat(/[0-9\.]+/g.exec(scope.row.area)[0])).toFixed(2)}}
                 </template>
             </el-table-column>
             <el-table-column label="骑行时长" width="160" sortable :sort-method="rideDurationSort">
@@ -328,8 +328,13 @@
                         console.log('error', err)
                     })
                 },
+                areaSort (a, b){
+                    return parseFloat(/[0-9\.]+/g.exec(a.area)[0]) - parseFloat(/[0-9\.]+/g.exec(b.area)[0])
+                },
                 valueForMoneySort (a, b){
-                    return a.priceParsed.price/a.area - b.priceParsed.price/b.area
+                    valueForMoneyA = a.priceParsed.price / parseFloat(/[0-9\.]+/g.exec(a.area)[0])
+                    valueForMoneyB = b.priceParsed.price / parseFloat(/[0-9\.]+/g.exec(b.area)[0])
+                    return valueForMoneyA - valueForMoneyB
                 },
                 rideDurationSort (a, b){
                     if(!a.pathRide)return 1
