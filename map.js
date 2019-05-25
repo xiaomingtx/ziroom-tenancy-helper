@@ -32,7 +32,7 @@ module.exports = {
         }, option))
         .end((err, res) => {
           err && reject(err)
-          if (res.text) {
+          if (res !== undefined && res.text) {
             resolve(JSON.parse(res.text))
           } else {
             reject('返回JSON解析错误')
